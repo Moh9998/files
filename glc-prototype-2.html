@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GLC Paints — Prototype 2: Clean Editorial</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #D92B2B; --accent: #E3001B;
+    --dark: #1a1a1a; --white: #fff;
+    --cream: #faf8f5; --light: #f2f0ec;
+    --border: #e8e4de; --text: #444; --mid: #888;
+    --yellow: #f0b429; --blue: #1a6eb5; --green: #2a8c52;
+  }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Manrope', sans-serif; color: var(--dark); background: var(--white); overflow-x: hidden; }
+
+  /* TOP BAR */
+  .topbar {
+    background: var(--dark); color: rgba(255,255,255,0.6); font-size: 12px;
+    text-align: center; padding: 8px 20px; letter-spacing: 1px;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .topbar span { color: var(--red); font-weight: 600; }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--white); border-bottom: 1px solid var(--border);
+  }
+  .nav-inner {
+    max-width: 1280px; margin: 0 auto;
+    display: flex; align-items: center; gap: 0;
+    height: 72px; padding: 0 clamp(16px,4vw,60px);
+  }
+  .logo-wrap { display: flex; align-items: center; gap: 12px; text-decoration: none; margin-right: 40px; }
+  .logo-mark {
+    width: 48px; height: 48px; border-radius: 50%; position: relative;
+    background: conic-gradient(#D92B2B 0deg 130deg, #f0b429 130deg 200deg, #1a6eb5 200deg 272deg, #2a8c52 272deg 360deg);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .logo-mark::after { content:''; width:20px; height:20px; border-radius:50%; background:white; }
+  .logo-type { display: flex; flex-direction: column; }
+  .lt-glc { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; color: var(--red); line-height: 1; letter-spacing: 1px; }
+  .lt-p { font-size: 9px; letter-spacing: 5px; color: var(--mid); text-transform: uppercase; margin-top: 2px; }
+  .nav-menu { display: flex; list-style: none; gap: 0; flex: 1; }
+  .nav-menu > li > a {
+    display: block; padding: 0 16px; height: 72px; line-height: 72px;
+    font-size: 13.5px; font-weight: 500; color: var(--text);
+    text-decoration: none; letter-spacing: 0.2px;
+    border-bottom: 2px solid transparent; transition: all 0.2s;
+  }
+  .nav-menu > li > a:hover { color: var(--dark); border-bottom-color: var(--red); }
+  .nav-actions { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+  .nav-icon-btn { background: none; border: none; cursor: pointer; padding: 8px; color: #666; font-size: 16px; transition: color 0.2s; }
+  .nav-icon-btn:hover { color: var(--red); }
+  .nav-quote {
+    background: var(--red); color: white; padding: 9px 20px;
+    border: none; font-family: 'Manrope', sans-serif; font-size: 12.5px;
+    font-weight: 600; letter-spacing: 0.5px; cursor: pointer; border-radius: 2px;
+    transition: all 0.25s;
+  }
+  .nav-quote:hover { background: #b52222; }
+  .ham { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 6px; }
+  .ham span { width: 22px; height: 2px; background: var(--dark); display: block; border-radius: 2px; }
+
+  /* HERO — EDITORIAL SPLIT */
+  .hero2 {
+    max-width: 1280px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 480px;
+    min-height: calc(100vh - 108px);
+    border-left: 1px solid var(--border); border-right: 1px solid var(--border);
+  }
+  .h2-left {
+    padding: clamp(40px,8vh,100px) clamp(24px,5vw,64px);
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column; justify-content: center;
+    position: relative;
+  }
+  .h2-tag {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 11px; color: var(--red); letter-spacing: 3.5px;
+    text-transform: uppercase; font-weight: 600; margin-bottom: 30px;
+  }
+  .tag-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--red); }
+  .h2-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(44px,5.5vw,80px);
+    line-height: 1.1; margin-bottom: 28px; color: var(--dark);
+  }
+  .h2-title em { color: var(--red); font-style: italic; }
+  .h2-body { font-size: 15px; color: var(--text); line-height: 1.8; max-width: 480px; margin-bottom: 44px; font-weight: 300; }
+  .h2-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn2-primary { background: var(--dark); color: white; padding: 14px 30px; border: 1.5px solid var(--dark); font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 600; letter-spacing: 0.5px; cursor: pointer; transition: all 0.3s; border-radius: 2px; }
+  .btn2-primary:hover { background: var(--red); border-color: var(--red); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(217,43,43,0.3); }
+  .btn2-sec { background: transparent; color: var(--dark); padding: 14px 30px; border: 1.5px solid var(--border); font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.3s; border-radius: 2px; }
+  .btn2-sec:hover { border-color: var(--dark); }
+  .h2-metrics { 
+    display: flex; gap: 32px; margin-top: 64px; padding-top: 32px;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .metric-val { font-family: 'Playfair Display', serif; font-size: 38px; color: var(--dark); line-height: 1; }
+  .metric-val span { color: var(--red); }
+  .metric-lbl { font-size: 11px; color: var(--mid); letter-spacing: 2px; text-transform: uppercase; margin-top: 5px; }
+
+  .h2-right {
+    background: var(--cream);
+    display: flex; flex-direction: column;
+  }
+  .h2-showcase {
+    flex: 1; background: var(--light);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; padding: 40px;
+    overflow: hidden;
+  }
+  .showcase-ring {
+    width: 200px; height: 200px; border-radius: 50%;
+    background: conic-gradient(
+      #C8102E 0deg, #E05B35 36deg, #F5C200 72deg, #8BC34A 108deg,
+      #2196F3 144deg, #7B2D8B 180deg, #E91E63 216deg,
+      #C8102E 252deg, #FF7043 288deg, #4CAF50 324deg, #C8102E 360deg
+    );
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    animation: slowSpin 30s linear infinite;
+    flex-shrink: 0;
+  }
+  @keyframes slowSpin { to { transform: rotate(360deg); } }
+  .showcase-center {
+    position: absolute; width: 80px; height: 80px; border-radius: 50%;
+    background: white; display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif; font-size: 18px; color: var(--red); font-weight: 700;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  }
+  .showcase-label {
+    position: absolute; bottom: 20px; font-size: 11px; color: var(--mid); letter-spacing: 2px; text-transform: uppercase;
+  }
+  .h2-swatches {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 0;
+    border-top: 1px solid var(--border);
+    height: 90px;
+  }
+  .sw { cursor: pointer; transition: flex 0.3s, filter 0.3s; flex: 1; }
+  .sw:hover { flex: 2; filter: brightness(1.1); }
+
+  /* BRANDS STRIP */
+  .strip {
+    background: var(--light); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    padding: 20px clamp(16px,4vw,60px);
+    display: flex; align-items: center; justify-content: center; gap: clamp(20px,4vw,60px);
+    flex-wrap: wrap;
+  }
+  .strip-item { font-size: 12px; letter-spacing: 2px; color: #999; text-transform: uppercase; font-weight: 600; }
+  .strip-div { width: 1px; height: 20px; background: var(--border); }
+
+  /* PRODUCTS */
+  .products-section {
+    max-width: 1280px; margin: 0 auto;
+    padding: clamp(60px,10vh,120px) clamp(16px,4vw,60px);
+  }
+  .ps-header { display: grid; grid-template-columns: 1fr auto; align-items: end; margin-bottom: 48px; }
+  .ps-tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 40px; }
+  .ps-tab {
+    padding: 12px 24px; font-size: 13px; font-weight: 500; cursor: pointer;
+    color: var(--mid); border-bottom: 2px solid transparent; margin-bottom: -1px;
+    transition: all 0.2s; background: none; border-top: none; border-left: none; border-right: none;
+    font-family: 'Manrope', sans-serif;
+  }
+  .ps-tab:hover { color: var(--dark); }
+  .ps-tab.active { color: var(--dark); border-bottom-color: var(--red); font-weight: 600; }
+  .prod-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 24px; }
+  .prod2 {
+    border: 1px solid var(--border); border-radius: 4px; overflow: hidden;
+    cursor: pointer; transition: box-shadow 0.3s, transform 0.3s; background: white;
+  }
+  .prod2:hover { box-shadow: 0 16px 48px rgba(0,0,0,0.1); transform: translateY(-4px); }
+  .prod2-img { height: 180px; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .prod2-blob { width: 90px; height: 110px; border-radius: 12px 12px 20px 20px; position: relative; box-shadow: 0 12px 32px rgba(0,0,0,0.2); transition: transform 0.3s; }
+  .prod2:hover .prod2-blob { transform: scale(1.05) rotate(-3deg); }
+  .prod2-label-tag { position: absolute; top: 0; left: 0; background: var(--dark); color: white; font-size: 9px; letter-spacing: 2px; padding: 6px 10px; text-transform: uppercase; }
+  .prod2-body { padding: 18px 20px 22px; border-top: 1px solid var(--border); }
+  .prod2-series { font-size: 10px; color: var(--mid); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 6px; }
+  .prod2-name { font-family: 'Playfair Display', serif; font-size: 18px; margin-bottom: 8px; }
+  .prod2-desc { font-size: 12.5px; color: var(--text); line-height: 1.6; margin-bottom: 16px; font-weight: 300; }
+  .prod2-foot { display: flex; justify-content: space-between; align-items: center; }
+  .prod2-price { font-size: 17px; font-weight: 600; }
+  .prod2-price span { font-size: 11px; color: var(--mid); font-weight: 400; }
+  .prod2-add { background: none; border: 1.5px solid var(--border); color: var(--dark); width: 34px; height: 34px; border-radius: 50%; font-size: 18px; cursor: pointer; transition: all 0.25s; display: flex; align-items: center; justify-content: center; }
+  .prod2-add:hover { background: var(--red); border-color: var(--red); color: white; }
+  .badge2-new { background: var(--red); }
+  .badge2-pro { background: var(--blue); }
+
+  /* INSPIRATION */
+  .inspiration {
+    background: var(--cream); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    padding: clamp(60px,10vh,120px) clamp(16px,4vw,60px);
+  }
+  .ins-inner { max-width: 1280px; margin: 0 auto; }
+  .ins-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; grid-template-rows: auto auto; gap: 20px; margin-top: 48px; }
+  .ins-item {
+    border-radius: 4px; overflow: hidden; cursor: pointer;
+    position: relative; transition: box-shadow 0.3s;
+  }
+  .ins-item:hover { box-shadow: 0 16px 48px rgba(0,0,0,0.15); }
+  .ins-item-large { grid-column: span 2; }
+  .ins-color-panel { position: relative; overflow: hidden; }
+  .ins-color-panel .ins-inner-wrap { height: 240px; transition: transform 0.5s; }
+  .ins-item-large .ins-inner-wrap { height: 300px; }
+  .ins-item:hover .ins-inner-wrap { transform: scale(1.04); }
+  .ins-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 50%); }
+  .ins-caption { position: absolute; bottom: 20px; left: 20px; right: 20px; color: white; }
+  .ins-caption h4 { font-family: 'Playfair Display', serif; font-size: 18px; margin-bottom: 4px; }
+  .ins-caption p { font-size: 12px; opacity: 0.75; }
+
+  /* TOOLS BELT */
+  .tools-belt { padding: clamp(60px,8vh,100px) clamp(16px,4vw,60px); }
+  .tb-inner { max-width: 1280px; margin: 0 auto; }
+  .tools-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-top: 48px; }
+  .tool-card { background: white; padding: 40px 32px; transition: background 0.3s; cursor: pointer; }
+  .tool-card:hover { background: var(--cream); }
+  .tool-icon { font-size: 32px; margin-bottom: 20px; }
+  .tool-title { font-family: 'Playfair Display', serif; font-size: 20px; margin-bottom: 10px; }
+  .tool-desc { font-size: 13.5px; color: var(--text); line-height: 1.7; font-weight: 300; margin-bottom: 20px; }
+  .tool-link { font-size: 13px; color: var(--red); font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 6px; }
+
+  /* TRUST */
+  .trust { background: var(--dark); padding: clamp(60px,8vh,100px) clamp(16px,4vw,60px); }
+  .trust-inner { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+  .trust-left h2 { font-family: 'Playfair Display', serif; font-size: clamp(30px,3.5vw,48px); color: white; line-height: 1.15; margin-bottom: 20px; }
+  .trust-left h2 em { color: var(--red); }
+  .trust-left p { color: #777; font-size: 15px; line-height: 1.8; font-weight: 300; margin-bottom: 36px; }
+  .trust-right { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; background: #1d1d1d; }
+  .trust-tile { background: #141414; padding: 32px 28px; }
+  .trust-tile-n { font-family: 'Playfair Display', serif; font-size: 42px; color: white; }
+  .trust-tile-n span { color: var(--red); }
+  .trust-tile-l { font-size: 12px; color: #555; letter-spacing: 2px; text-transform: uppercase; margin-top: 6px; }
+
+  /* CTA 2 */
+  .cta2 {
+    background: var(--red); padding: clamp(60px,8vh,100px) clamp(16px,4vw,60px);
+    text-align: center;
+  }
+  .cta2 h2 { font-family: 'Playfair Display', serif; font-size: clamp(28px,3.5vw,50px); color: white; margin-bottom: 16px; }
+  .cta2 p { color: rgba(255,255,255,0.7); font-size: 15px; margin-bottom: 36px; font-weight: 300; }
+  .cta2-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+  /* FOOTER 2 */
+  footer2 { display: block; background: var(--dark); }
+  .ft2 { max-width: 1280px; margin: 0 auto; padding: clamp(50px,7vh,80px) clamp(16px,4vw,60px) 28px; }
+  .ft2-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; padding-bottom: 40px; border-bottom: 1px solid #222; }
+  .ft2-col h5 { color: #777; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 20px; }
+  .ft2-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .ft2-links a { color: #555; text-decoration: none; font-size: 13.5px; font-weight: 300; transition: color 0.2s; }
+  .ft2-links a:hover { color: var(--red); }
+  .ft2-bottom { display: flex; justify-content: space-between; padding-top: 24px; font-size: 12px; color: #444; flex-wrap: wrap; gap: 10px; }
+
+  /* MOBILE */
+  .mob-menu {
+    display: none; position: fixed; inset: 0; background: var(--dark);
+    z-index: 200; flex-direction: column; align-items: center; justify-content: center; gap: 24px;
+  }
+  .mob-menu.show { display: flex; }
+  .mob-menu a { color: white; text-decoration: none; font-family: 'Playfair Display', serif; font-size: 28px; transition: color 0.2s; }
+  .mob-menu a:hover { color: var(--red); }
+  .mob-x { position: absolute; top: 20px; right: 20px; background: none; border: none; color: #555; font-size: 28px; cursor: pointer; }
+
+  .fade { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .fade.vis { opacity: 1; transform: none; }
+
+  @media (max-width: 1024px) {
+    .hero2 { grid-template-columns: 1fr; }
+    .h2-right { display: none; }
+    .ins-grid { grid-template-columns: 1fr 1fr; }
+    .ins-item-large { grid-column: span 2; }
+    .tools-cards { grid-template-columns: 1fr; }
+    .trust-inner { grid-template-columns: 1fr; }
+    .ft2-top { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 768px) {
+    .nav-menu, .nav-quote { display: none; }
+    .ham { display: flex; }
+    .strip { gap: 12px; }
+    .strip-div { display: none; }
+    .ins-grid { grid-template-columns: 1fr; }
+    .ins-item-large { grid-column: span 1; }
+    .trust-right { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 480px) {
+    .h2-btns { flex-direction: column; }
+    .h2-btns button { width: 100%; }
+    .prod-list { grid-template-columns: 1fr; }
+    .ft2-top { grid-template-columns: 1fr; }
+    .ps-tabs { overflow-x: auto; }
+  }
+</style>
+</head>
+<body>
+
+<div class="mob-menu" id="mob">
+  <button class="mob-x" onclick="document.getElementById('mob').classList.remove('show')">✕</button>
+  <a href="#">Products</a>
+  <a href="#">Colors</a>
+  <a href="#">Professionals</a>
+  <a href="#">Projects</a>
+  <a href="#" style="color:var(--red)">Get a Quote</a>
+</div>
+
+<div class="topbar">
+  Free shipping on orders over $150 · <span>SPRING2025</span> for 10% off your first order
+</div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="logo-wrap">
+      <div class="logo-mark"></div>
+      <div class="logo-type">
+        <span class="lt-glc">GLC</span>
+        <span class="lt-p">Paints</span>
+      </div>
+    </a>
+    <ul class="nav-menu">
+      <li><a href="#">Products</a></li>
+      <li><a href="#">Color Finder</a></li>
+      <li><a href="#">For Professionals</a></li>
+      <li><a href="#">Projects</a></li>
+      <li><a href="#">About</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="nav-icon-btn">🔍</button>
+      <button class="nav-icon-btn">🛒</button>
+      <button class="nav-quote">Get a Quote</button>
+      <div class="ham" onclick="document.getElementById('mob').classList.add('show')">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div style="max-width:1280px;margin:0 auto;border-left:1px solid var(--border);border-right:1px solid var(--border)">
+<section class="hero2">
+  <div class="h2-left">
+    <div class="h2-tag"><div class="tag-dot"></div>Egypt's #1 Paint Brand — Since 1970</div>
+    <h1 class="h2-title">Color Your<br><em>World</em><br>Beautifully</h1>
+    <p class="h2-body">Premium paints, wood finishes, and construction products crafted with over four decades of expertise — trusted by professionals and homeowners across 22 countries.</p>
+    <div class="h2-btns">
+      <button class="btn2-primary">Explore Products</button>
+      <button class="btn2-sec">Find a Color</button>
+    </div>
+    <div class="h2-metrics">
+      <div><div class="metric-val">500<span>+</span></div><div class="metric-lbl">Colors</div></div>
+      <div><div class="metric-val">40<span>+</span></div><div class="metric-lbl">Years</div></div>
+      <div><div class="metric-val">22</div><div class="metric-lbl">Countries</div></div>
+      <div><div class="metric-val">1M<span>+</span></div><div class="metric-lbl">Customers</div></div>
+    </div>
+  </div>
+  <div class="h2-right">
+    <div class="h2-showcase">
+      <div class="showcase-ring"></div>
+      <div class="showcase-center">GLC</div>
+      <span class="showcase-label">500+ Colors Available</span>
+    </div>
+    <div class="h2-swatches">
+      <div class="sw" style="background:#C8102E"></div>
+      <div class="sw" style="background:#0077C8"></div>
+      <div class="sw" style="background:#2a8c52"></div>
+      <div class="sw" style="background:#f0b429"></div>
+      <div class="sw" style="background:#263238"></div>
+    </div>
+  </div>
+</section>
+</div>
+
+<div class="strip fade">
+  <span class="strip-item">Interior Paints</span><div class="strip-div"></div>
+  <span class="strip-item">Exterior Paints</span><div class="strip-div"></div>
+  <span class="strip-item">Wood & Metal</span><div class="strip-div"></div>
+  <span class="strip-item">Waterproofing</span><div class="strip-div"></div>
+  <span class="strip-item">Construction</span><div class="strip-div"></div>
+  <span class="strip-item">Primers</span>
+</div>
+
+<!-- PRODUCTS -->
+<section class="products-section fade">
+  <div class="ps-header">
+    <div>
+      <div class="sec-eyebrow" style="font-size:11px;color:var(--red);letter-spacing:4px;text-transform:uppercase;font-weight:600;margin-bottom:8px">Our Catalog</div>
+      <div style="font-family:'Playfair Display',serif;font-size:clamp(28px,3.5vw,44px);font-weight:700">Featured Products</div>
+    </div>
+    <a href="#" style="font-size:13px;color:var(--red);font-weight:600;text-decoration:none;border-bottom:1px solid var(--red);padding-bottom:2px">View All Products →</a>
+  </div>
+  <div class="ps-tabs">
+    <button class="ps-tab active" onclick="setTab(this)">All Products</button>
+    <button class="ps-tab" onclick="setTab(this)">Interior</button>
+    <button class="ps-tab" onclick="setTab(this)">Exterior</button>
+    <button class="ps-tab" onclick="setTab(this)">Wood & Metal</button>
+    <button class="ps-tab" onclick="setTab(this)">Construction</button>
+  </div>
+  <div class="prod-list">
+    <div class="prod2 fade">
+      <div class="prod2-img" style="background:#fef0f0">
+        <div class="prod2-label-tag" style="background:var(--red)">New</div>
+        <div class="prod2-blob" style="background:linear-gradient(160deg,#E3001B,#8B0015)"></div>
+      </div>
+      <div class="prod2-body">
+        <div class="prod2-series">Exterior Series</div>
+        <div class="prod2-name">SuperShield Plus</div>
+        <div class="prod2-desc">Advanced weatherproofing formula, UV resistant, 15-year guarantee.</div>
+        <div class="prod2-foot"><div class="prod2-price">$24 <span>/ liter</span></div><button class="prod2-add">+</button></div>
+      </div>
+    </div>
+    <div class="prod2 fade">
+      <div class="prod2-img" style="background:#f0f5fe">
+        <div class="prod2-blob" style="background:linear-gradient(160deg,#0077C8,#003d7a)"></div>
+      </div>
+      <div class="prod2-body">
+        <div class="prod2-series">Interior Series</div>
+        <div class="prod2-name">VelvetTouch Matt</div>
+        <div class="prod2-desc">Ultra-smooth matte finish, washable, low-VOC formula.</div>
+        <div class="prod2-foot"><div class="prod2-price">$18 <span>/ liter</span></div><button class="prod2-add">+</button></div>
+      </div>
+    </div>
+    <div class="prod2 fade">
+      <div class="prod2-img" style="background:#fdf9ed">
+        <div class="prod2-label-tag" style="background:#e07b00">Sale</div>
+        <div class="prod2-blob" style="background:linear-gradient(160deg,#FFD54F,#FF8F00)"></div>
+      </div>
+      <div class="prod2-body">
+        <div class="prod2-series">Primer Series</div>
+        <div class="prod2-name">PrimePro 2000</div>
+        <div class="prod2-desc">Universal primer for all surfaces — ensures perfect adhesion.</div>
+        <div class="prod2-foot"><div class="prod2-price">$15 <span>/ liter</span></div><button class="prod2-add">+</button></div>
+      </div>
+    </div>
+    <div class="prod2 fade">
+      <div class="prod2-img" style="background:#f0faf4">
+        <div class="prod2-blob" style="background:linear-gradient(160deg,#2E7D32,#00A651)"></div>
+      </div>
+      <div class="prod2-body">
+        <div class="prod2-series">Eco Series</div>
+        <div class="prod2-name">EcoSheen Satin</div>
+        <div class="prod2-desc">Eco-certified, zero-VOC, silky satin finish for interiors.</div>
+        <div class="prod2-foot"><div class="prod2-price">$22 <span>/ liter</span></div><button class="prod2-add">+</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INSPIRATION -->
+<section class="inspiration fade">
+  <div class="ins-inner">
+    <div style="font-size:11px;color:var(--red);letter-spacing:4px;text-transform:uppercase;font-weight:600;margin-bottom:8px">Ideas & Inspiration</div>
+    <div style="font-family:'Playfair Display',serif;font-size:clamp(28px,3.5vw,44px);font-weight:700">Rooms We Love</div>
+    <div class="ins-grid">
+      <div class="ins-item ins-item-large">
+        <div class="ins-color-panel">
+          <div class="ins-inner-wrap" style="background:linear-gradient(135deg,#2c3e50 0%,#1a252f 100%)"></div>
+          <div class="ins-overlay"></div>
+          <div class="ins-caption">
+            <h4>Modern Living Room</h4>
+            <p>Midnight Navy — GLC INT-2201</p>
+          </div>
+        </div>
+      </div>
+      <div class="ins-item">
+        <div class="ins-color-panel">
+          <div class="ins-inner-wrap" style="background:linear-gradient(135deg,#c8102e 0%,#8b0000 100%)"></div>
+          <div class="ins-overlay"></div>
+          <div class="ins-caption">
+            <h4>Bold Kitchen</h4>
+            <p>GLC Red — Classic</p>
+          </div>
+        </div>
+      </div>
+      <div class="ins-item">
+        <div class="ins-color-panel">
+          <div class="ins-inner-wrap" style="background:linear-gradient(135deg,#e8d5b0 0%,#c9a96e 100%)"></div>
+          <div class="ins-overlay"></div>
+          <div class="ins-caption">
+            <h4>Warm Bedroom</h4>
+            <p>Sand Dune — EXT-0432</p>
+          </div>
+        </div>
+      </div>
+      <div class="ins-item">
+        <div class="ins-color-panel">
+          <div class="ins-inner-wrap" style="background:linear-gradient(135deg,#1a6b3e 0%,#0d3d22 100%)"></div>
+          <div class="ins-overlay"></div>
+          <div class="ins-caption">
+            <h4>Garden Facade</h4>
+            <p>Forest Green — EXT-1122</p>
+          </div>
+        </div>
+      </div>
+      <div class="ins-item">
+        <div class="ins-color-panel">
+          <div class="ins-inner-wrap" style="background:linear-gradient(135deg,#4a90c4 0%,#1a5a8a 100%)"></div>
+          <div class="ins-overlay"></div>
+          <div class="ins-caption">
+            <h4>Classic Office</h4>
+            <p>Steel Blue — INT-0803</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOOLS -->
+<section class="tools-belt fade">
+  <div class="tb-inner">
+    <div style="font-size:11px;color:var(--red);letter-spacing:4px;text-transform:uppercase;font-weight:600;margin-bottom:8px">Digital Tools</div>
+    <div style="font-family:'Playfair Display',serif;font-size:clamp(28px,3.5vw,44px);font-weight:700">Plan with Confidence</div>
+    <div class="tools-cards">
+      <div class="tool-card">
+        <div class="tool-icon">🎨</div>
+        <div class="tool-title">Color Visualizer</div>
+        <div class="tool-desc">Upload a photo of your room and try any color before you buy using our AR-powered tool.</div>
+        <a href="#" class="tool-link">Try it now <span>→</span></a>
+      </div>
+      <div class="tool-card">
+        <div class="tool-icon">📐</div>
+        <div class="tool-title">Paint Calculator</div>
+        <div class="tool-desc">Enter your room dimensions and get an exact paint quantity — eliminate waste and guesswork.</div>
+        <a href="#" class="tool-link">Calculate now <span>→</span></a>
+      </div>
+      <div class="tool-card">
+        <div class="tool-icon">🏪</div>
+        <div class="tool-title">Find a Store</div>
+        <div class="tool-desc">Locate your nearest GLC authorized dealer, service center, or distributor across the region.</div>
+        <a href="#" class="tool-link">Find location <span>→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST -->
+<section class="trust fade">
+  <div class="trust-inner">
+    <div class="trust-left">
+      <h2>Built on Trust,<br>Backed by <em>Science</em></h2>
+      <p>GLC Paints invests in world-class research and testing facilities to ensure every product meets international standards of quality, safety, and sustainability.</p>
+      <button class="btn2-primary">Our Story</button>
+    </div>
+    <div class="trust-right">
+      <div class="trust-tile"><div class="trust-tile-n">500<span>+</span></div><div class="trust-tile-l">Color Options</div></div>
+      <div class="trust-tile"><div class="trust-tile-n">40<span>+</span></div><div class="trust-tile-l">Years of Trust</div></div>
+      <div class="trust-tile"><div class="trust-tile-n">22</div><div class="trust-tile-l">Countries</div></div>
+      <div class="trust-tile"><div class="trust-tile-n">1M<span>+</span></div><div class="trust-tile-l">Happy Customers</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta2 fade">
+  <h2>Start Your Next Project Today</h2>
+  <p>Talk to one of our paint specialists for free expert guidance tailored to your project.</p>
+  <div class="cta2-btns">
+    <button class="btn-wh" style="background:white;color:var(--red);padding:14px 32px;border:none;font-family:'Manrope',sans-serif;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:0.5px;transition:all 0.3s" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform=''">Get a Free Consultation</button>
+    <button style="background:transparent;color:white;padding:14px 32px;border:1.5px solid rgba(255,255,255,0.4);font-family:'Manrope',sans-serif;font-size:13px;font-weight:600;cursor:pointer;letter-spacing:0.5px;transition:all 0.3s" onmouseover="this.style.borderColor='white'" onmouseout="this.style.borderColor='rgba(255,255,255,0.4)'">Browse Products</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer2>
+  <div class="ft2">
+    <div class="ft2-top">
+      <div class="ft2-col">
+        <div style="font-family:'Playfair Display',serif;font-size:24px;color:white;margin-bottom:10px">GLC Paints</div>
+        <p style="font-size:13.5px;color:#555;line-height:1.75;font-weight:300;max-width:240px">Quality paints & construction solutions. Middle East's most trusted brand since 1970.</p>
+        <div style="display:flex;gap:10px;margin-top:18px">
+          <div style="width:30px;height:30px;border:1px solid #222;color:#444;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s" onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--red)'" onmouseout="this.style.borderColor='#222';this.style.color='#444'">f</div>
+          <div style="width:30px;height:30px;border:1px solid #222;color:#444;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s" onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--red)'" onmouseout="this.style.borderColor='#222';this.style.color='#444'">in</div>
+          <div style="width:30px;height:30px;border:1px solid #222;color:#444;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s" onmouseover="this.style.borderColor='var(--red)';this.style.color='var(--red)'" onmouseout="this.style.borderColor='#222';this.style.color='#444'">tw</div>
+        </div>
+      </div>
+      <div class="ft2-col">
+        <h5>Products</h5>
+        <ul class="ft2-links">
+          <li><a href="#">Interior Paints</a></li>
+          <li><a href="#">Exterior Paints</a></li>
+          <li><a href="#">Wood Finishes</a></li>
+          <li><a href="#">Metal Coatings</a></li>
+          <li><a href="#">Construction</a></li>
+        </ul>
+      </div>
+      <div class="ft2-col">
+        <h5>Company</h5>
+        <ul class="ft2-links">
+          <li><a href="#">About GLC</a></li>
+          <li><a href="#">Sustainability</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press</a></li>
+        </ul>
+      </div>
+      <div class="ft2-col">
+        <h5>Support</h5>
+        <ul class="ft2-links">
+          <li><a href="#">Find a Store</a></li>
+          <li><a href="#">Technical Docs</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">FAQ</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="ft2-bottom">
+      <span>© 2025 GLC Paints. All rights reserved.</span>
+      <span><a href="#" style="color:#333;text-decoration:none">Privacy Policy</a> · <a href="#" style="color:#333;text-decoration:none">Terms</a></span>
+    </div>
+  </div>
+</footer2>
+
+<script>
+  function setTab(btn) {
+    document.querySelectorAll('.ps-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+  }
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('vis'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
